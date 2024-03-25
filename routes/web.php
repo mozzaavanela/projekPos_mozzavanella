@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::get('/', function () {
 
 Route::resource('kategori',CategoryController::class)
 ->except('show','destroy','create');
+
+route::resource('pelanggan',CustomerController::class)->except('destroy');
