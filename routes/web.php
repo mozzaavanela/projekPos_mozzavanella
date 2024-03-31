@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,13 +22,14 @@ Route::get('/', function () {
     return view('dashboard',[
         "title"=>"Dashboard"
     ]);
-});
+})->middleware('auth');
 
 Route::resource('kategori',CategoryController::class)
-->except('show','destroy','create');
+->except('show','destroy','create')->middleware('auth');
+route::resource('pelanggan',CustomerController::class)->except('destroy')->middleware('auth');
+Route::resource('produk', ProductController::class)->middleware('auth');
+Route::resource('pengguna',UserController::class)->except('destroy','create','show','update','edit')->middleware('auth');
 
-route::resource('pelanggan',CustomerController::class)->except('destroy');
-
-Route::resource('produk', ProductController::class);
-
-Route::resource('pengguna',UserController::class)->except('destroy','create','show','update','edit');
+Route::get('login',[LoginController::class,'loginView'])->name('login');
+Route::post('login',[LoginController::class,'authenticate']);
+Route::post('logout',[LoginController::class,'logout'])->middleware('auth');
